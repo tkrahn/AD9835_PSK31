@@ -1,0 +1,78 @@
+AD9835_PSK31
+
+By Thomas Krahn, KT5TK / DL4MDW (2012)
+
+Simple 20m PSK31 beacon transmitting GPS coordinates 
+using an ATMega328 and an AD9835 DDS
+
+The circuit can be built from any Arduino and an AD9835 breakout board
+like https://www.sparkfun.com/products/9169
+
+Pinout:
+LED_PIN 3 (This is not the usual Arduino LED because 13 is already used for SCK)
+
+GPS_POWER_PIN 4  (Can be used to turn off the GPS to save power)
+GPS_RESET_PIN 5  (Can be used to wake up the GPS properly after sleep mode)
+  
+SCLK     13      (aka SCK)
+MISO     12      (not used)
+SDATA    11      (aka MOSI)
+SS       10      (not used)
+FSYNC     9      (PORTB.1)
+FSEL      8      (PORTB.0)
+PSEL1     7      (PORTD.7)
+PSEL0     6      (PORTD.6)
+
+The serial pins TXD and RXD are connected (crossed over) to the GPS
+I was using the GT-320FW High-Altitude GPS Receiver from Argentdata:
+https://www.argentdata.com/catalog/product_info.php?products_id=144
+
+
+GT-320FW
+Pin	Color	Function
+1	Yellow	TTL output
+2	Blue	TTL input
+3	White	RS-232 output
+4	Green	RS-232 input
+5	Red	    3.7-6v power
+6	Black	Ground
+
+The yellow wire from the GT-320FW needs to get connected to RX on the Arduino.
+The blue wire is not neccesary.
+Red & black can be powered through the Arduino 5V and GND pins
+
+Note that the output is a little bit hard and needs passive filtering to reduce
+spurs. I have used a little push-pull transistor amplifier to increase the power
+from 10 mW to about 800 mW. http://www.sm0vpo.com:800/tx/qrp-hf1.htm
+
+Power from 12 V solar panels was not stable enough to power up the whole unit.
+It caused a significant frequency drift depending on illumination so that the 
+PSK signal could not be decoded. Therefore I powered the AD9835 and the
+ATMega by a 9V Energizer Advanced Lithium block and only the PA was powered by 
+the solar cells.
+
+More info about the BLT-31 balloon flight can be found here:
+http://kt5tk.tkrahn.com/blt31.html
+
+Pictures:
+http://tkrahn.dyndns.org/gallery2/main.php?g2_itemId=4560
+
+72
+
+Thomas
+
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+
